@@ -1,22 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TreasureHunter : MonoBehaviour
 {
     public Collectible[] treasureList;
     public TreasureHunterInventory inventory;
+    public TextMesh totalScore;
+
+    public TextMesh winCond;
 
     public int TreasureScore;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start() 
     {
-        
+        winCond.text = "";
     }
 
     // Update is called once per frame
     void Update()
     {
+        totalScore.text = "" + TreasureScore;
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             if (!inventory.treasure[0])
@@ -57,15 +63,9 @@ public class TreasureHunter : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            Debug.Log("treasure list: " + inventory.treasure[0] + ", " + inventory.treasure[1] + ", " + inventory.treasure[2]);
-            Debug.Log("Score is: " + TreasureScore);
-
-            if (inventory.treasure[0] && inventory.treasure[1] && inventory.treasure[2])
+        if (inventory.treasure[0] && inventory.treasure[1] && inventory.treasure[2])
             {
-                Debug.Log("YOU WIN!");
+                winCond.text = "YOU WIN!!!!";
             }
         }
-    }
 }
