@@ -15,7 +15,7 @@ public class Collectible : MonoBehaviour
 
     private void Start() 
     {
-        treasureValue = Random.Range(1, 10);
         scoreValue.text = "" + treasureValue;
+        scoreValue.color = Color.black;
     }
 }
