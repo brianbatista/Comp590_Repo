@@ -8,8 +8,7 @@ public class Collectible : MonoBehaviour
 {
     public int treasureValue;
 
-    //[SerializeField]
-    //public TextElement fuckit;
+    public int ID;
 
     public TextMesh scoreValue;
 

@@ -47,7 +47,10 @@ public class ShootingScript : MonoBehaviour
             if (Physics.Raycast(ray1, out hit, _range, _shootableMask))
             {
                 Debug.Log("hit " + hit.collider.gameObject);
+
                 inventorySpace.inventoryGO.Add(hit.collider.gameObject);
+
+                inventorySpace.inventoryDic[hit.collider.gameObject] = inventorySpace.inventoryDic[hit.collider.gameObject] + 1;
 
                 // Change score
                 pointScore += hit.collider.gameObject.GetComponent<Collectible>().treasureValue;
