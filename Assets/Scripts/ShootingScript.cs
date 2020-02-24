@@ -48,12 +48,22 @@ public class ShootingScript : MonoBehaviour
             {
                 Debug.Log("hit " + hit.collider.gameObject);
 
-                inventorySpace.inventoryGO.Add(hit.collider.gameObject);
+                //inventorySpace.inventoryGO.Add(hit.collider.gameObject);
+                GameObject wasHit = Resources.Load<GameObject>(hit.collider.gameObject.GetComponent<Collectible>().ID);
 
-                inventorySpace.inventoryDic[hit.collider.gameObject] = inventorySpace.inventoryDic[hit.collider.gameObject] + 1;
+                if(inventorySpace.inventoryDic.ContainsKey(wasHit))
+                {
+                    inventorySpace.inventoryDic[wasHit]++;
+                }
+                else
+                {
+                    inventorySpace.inventoryDic.Add(wasHit, 1);
+                }
 
                 // Change score
                 pointScore += hit.collider.gameObject.GetComponent<Collectible>().treasureValue;
+
+                Destroy(hit.collider.gameObject);
             }
         }
 

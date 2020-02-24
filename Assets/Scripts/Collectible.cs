@@ -8,7 +8,7 @@ public class Collectible : MonoBehaviour
 {
     public int treasureValue;
 
-    public int ID;
+    public string ID;
 
     public TextMesh scoreValue;
 

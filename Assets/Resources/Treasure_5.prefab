@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treasureValue: 5
-  ID: 5
+  ID: Treasure_5
   scoreValue: {fileID: 8987039603383982876}
 --- !u!54 &890133978844398373
 Rigidbody:
