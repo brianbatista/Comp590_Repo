@@ -11,8 +11,9 @@ public class ShootingScript : MonoBehaviour
 
     public Inventory_v2 inventorySpace;
 
-    public TextMesh pointText;
-    int pointScore;
+    public TextMesh collectPoint;
+
+    public ScoreUpdate score;
 
     
     // Start is called before the first frame update
@@ -22,7 +23,7 @@ public class ShootingScript : MonoBehaviour
 
         _shootableMask = LayerMask.GetMask("Treasure");
         
-        pointText.text = "0";
+        collectPoint.text = "0";
 
         // Tried automatically acquiring inventory
         // Inventory_v2 inventorySpace = this.transform.parent.gameObject.GetComponent(typeof(Inventory_v2)) as Inventory_v2;
@@ -61,7 +62,7 @@ public class ShootingScript : MonoBehaviour
                 }
 
                 // Change score
-                pointScore += hit.collider.gameObject.GetComponent<Collectible>().treasureValue;
+                score.scoreAmount += hit.collider.gameObject.GetComponent<Collectible>().treasureValue;
 
                 Destroy(hit.collider.gameObject);
             }
@@ -70,9 +71,6 @@ public class ShootingScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             inventorySpace.inventoryGO.Clear();
-            pointScore = 0;
         }
-
-    pointText.text = "" + pointScore;
     }
 }
