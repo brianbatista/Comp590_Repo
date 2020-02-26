@@ -15,11 +15,16 @@ public class BFB_HandGrab_v4 : MonoBehaviour
     private OVRInput.RawButton[] controllerTriggers = new OVRInput.RawButton[] {OVRInput.RawButton.LIndexTrigger,OVRInput.RawButton.RIndexTrigger};
     private OVRInput.RawButton[] controllerFaceButtons= new OVRInput.RawButton[] {OVRInput.RawButton.X,OVRInput.RawButton.A};
 
+    private BeltInventory inventoryBelt;
+
+    public GameObject scoreKeeper;
+
     // Start is called before the first frame update
     void Start()
     {
         _shootableMask = LayerMask.GetMask("Treasure"); // LayerMask for the collectible objects
         _range = 100f; // Range for the Raycast to shoot from the hand.
+        inventoryBelt = GetComponent<BeltInventory>();
     }
 
     // Update is called once per frame
@@ -82,6 +87,27 @@ public class BFB_HandGrab_v4 : MonoBehaviour
                 Debug.Log("<color=red>Trigger or Face Button was released.</color>");
 
                 if (_grabbed[i]){
+                    
+                    var capsuleOff = new Vector3 (0.5f, 0.5f, 0.5f);
+                    Collider[] hits = Physics.OverlapCapsule(inventoryBelt.transform.position - capsuleOff, inventoryBelt.transform.position + capsuleOff, 0.15f, _shootableMask, QueryTriggerInteraction.Collide);
+                    foreach(Collider inventoryHit in hits)
+                    {
+                        if (inventoryHit.tag == "Treasure")
+                        {
+                            scoreKeeper.GetComponent<ScoreUpdater>().scoreValue += inventoryHit.GetComponent<Collectible>().treasureValue;
+                            GameObject wasHit = Resources.Load<GameObject>(hit.collider.gameObject.GetComponent<Collectible>().ID);
+                            if(inventorySpace.inventoryDic.ContainsKey(wasHit))
+                                {
+                                    inventorySpace.inventoryDic[wasHit]++;
+                                }
+                                else
+                                {
+                                    inventorySpace.inventoryDic.Add(wasHit, 1);
+                                }
+
+                                Destroy(hit.collider.gameObject);
+                        }
+                    }
 
                     Debug.Log("<color=blue>OBJECT RELEASED.</color>");
                     _grabbed[i].GetComponent<Rigidbody>().useGravity = true;
@@ -91,9 +117,10 @@ public class BFB_HandGrab_v4 : MonoBehaviour
                     _grabbed[i] = null;
                 }
             }
+
+        
         }
     }
-
     void grab(int whichController, GameObject thingToGrab, bool shouldSnap){
         
         Debug.Log("<color=red>_grabbed</color> " + whichController + " <color=red>is</color> " + _grabbed[whichController]);

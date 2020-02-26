@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 890133978844398373}
   m_Layer: 10
   m_Name: Treasure_5
-  m_TagString: Untagged
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
