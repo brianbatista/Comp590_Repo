@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BFB_HandGrabbing : MonoBehaviour
+public class BFB_HandGrabbing_v2 : MonoBehaviour
 {
+/*
     public float _range;
 
     private LayerMask _shootableMask;
@@ -32,6 +33,7 @@ public class BFB_HandGrabbing : MonoBehaviour
     {
         _shootableMask = LayerMask.GetMask("Treasure"); // LayerMask for the collectible objects
         _range = 100f; // Range for the Raycast to shoot from the hand.
+        lineLaser = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -40,10 +42,32 @@ public class BFB_HandGrabbing : MonoBehaviour
         lineLaser.SetPosition(0,transform.position + transform.forward); // Adding this +transform.forward offset so that you can't "RayCast Pick-Up" an object that's too close. Going to use Colliders and Grip button for that.
         lineLaser.SetPosition(1,transform.position + transform.forward * 2); // Positions the line renderer to shoot from the controller (with a small offset), in forward direction.
     
+        //
+        if(OVRInput.GetDown(triggerPressed, myController) && !objectGrabbed)
+        {
+            Ray ray = new Ray(transform.position + transform.forward * 1, transform.forward * _range); // Actual Ray
+            Debug.DrawRay(transform.position + transform.forward * 1, transform.forward * _range, Color.green); // Ray Debugger
+            RaycastHit hit = new RaycastHit();
 
-        Ray ray = new Ray(transform.position + transform.forward * 1, transform.forward * _range); // Actual Ray
-        Debug.DrawRay(transform.position + transform.forward * 1, transform.forward * _range, Color.green); // Ray Debugger
-        RaycastHit hit = new RaycastHit();
+            // Raycast Grabbing
+            if (Physics.Raycast(ray, out hit, _range))
+            {
+                lineLaser.SetPosition(1,hit.point); // Sets Line Renderer to the object that was hit.
+                GameObject pointed = hit.collider.gameObject; // Created so that you CAN point your laser at another object, but not manipulate it if you try to grab it while having something else grabbed already.
+
+                if(pointed.layer == LayerMask.NameToLayer("Treasure"))
+                {
+                    Debug.Log("<color=red>OBJECT GRABBED</color> <color=green>USING DISTANCE SNAP GRAB </color>.");
+
+                    objectGrabbed = true;
+                    pointed.GetComponent<Rigidbody>().useGravity = false; // So it doesn't fall.
+                    pointed.GetComponent<Rigidbody>().isKinematic = true; // So it doesn't collide with anything and acquire force.
+                    pointed.transform.parent = this.transform; // Makes it "obey" the controller.
+                    _grabbed = pointed;
+                    pointed = null;
+                    _grabbed.transform.localPosition = Vector3.zero; // Teleports it to your hand.
+                }
+            }
 
         // Raycast Grabbing
         if (Physics.Raycast(ray, out hit, _range))
@@ -52,9 +76,6 @@ public class BFB_HandGrabbing : MonoBehaviour
 
             if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Treasure"))
             {
-                GameObject pointed = hit.collider.gameObject; // Created so that you CAN point your laser at another object, but not manipulate it if you try to grab it while having something else grabbed already.
-                                                              // This part might actually be useless now that I'm thinking about it; I was just being careful, but might have been dumb instead.
-
                 //
                 // Using DISTANCE SNAP GRAB
                 //
@@ -153,5 +174,4 @@ public class BFB_HandGrabbing : MonoBehaviour
 
                 Destroy(hit.collider.gameObject);
             */
-    }
-}
+        }
