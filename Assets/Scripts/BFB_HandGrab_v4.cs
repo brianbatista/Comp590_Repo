@@ -70,7 +70,7 @@ public class BFB_HandGrab_v4 : MonoBehaviour
                     //this should probably use controller positions.... which again can be a 2-element array
                     if(Physics.SphereCast(controllers[i].transform.position, 100, controllers[i].transform.forward, out magneticHit, 100))
                     {
-                        Debug.Log("<color=red>Magnetic Sphere casted.</color>");
+                        Debug.Log("<color=red>Magnetic Sphere casted.</color>" +"<color=blue> SphereCast hitted </color>" + magneticHit);
                         //magnetic grab for this controller
                         if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Treasure"))
                         {
@@ -87,8 +87,8 @@ public class BFB_HandGrab_v4 : MonoBehaviour
                 Debug.Log("<color=red>Trigger or Face Button was released.</color>");
 
                 if (_grabbed[i]){
-                    
-                    var capsuleOff = new Vector3 (0.5f, 0.5f, 0.5f);
+                    // Drop into Inventory
+                    var capsuleOff = new Vector3 (0.5f, 0, 0);
                     Collider[] hits = Physics.OverlapCapsule(inventoryBelt.transform.position - capsuleOff, inventoryBelt.transform.position + capsuleOff, 0.15f, _shootableMask, QueryTriggerInteraction.Collide);
                     foreach(Collider inventoryHit in hits)
                     {
@@ -96,13 +96,13 @@ public class BFB_HandGrab_v4 : MonoBehaviour
                         {
                             scoreKeeper.GetComponent<ScoreUpdater>().scoreValue += inventoryHit.GetComponent<Collectible>().treasureValue;
                             GameObject wasHit = Resources.Load<GameObject>(hit.collider.gameObject.GetComponent<Collectible>().ID);
-                            if(inventorySpace.inventoryDic.ContainsKey(wasHit))
+                            if(inventoryBelt.inventoryDic.ContainsKey(wasHit))
                                 {
-                                    inventorySpace.inventoryDic[wasHit]++;
+                                    inventoryBelt.inventoryDic[wasHit]++;
                                 }
                                 else
                                 {
-                                    inventorySpace.inventoryDic.Add(wasHit, 1);
+                                    inventoryBelt.inventoryDic.Add(wasHit, 1);
                                 }
 
                                 Destroy(hit.collider.gameObject);
